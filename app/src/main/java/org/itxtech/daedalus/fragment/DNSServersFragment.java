@@ -2,16 +2,16 @@ package org.itxtech.daedalus.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import org.itxtech.daedalus.Daedalus;
 import org.itxtech.daedalus.R;
 import org.itxtech.daedalus.activity.ConfigActivity;
@@ -121,7 +121,7 @@ public class DNSServersFragment extends ToolbarFragment {
             CustomDNSServer server = Daedalus.configurations.getCustomDNSServers().get(position);
             holder.setIndex(position);
             holder.textViewName.setText(server.getName());
-            holder.textViewAddress.setText(server.getAddress() + ":" + server.getPort());
+            holder.textViewAddress.setText(server.getRealName());
         }
 
         @Override

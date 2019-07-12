@@ -11,6 +11,7 @@
     <string name="notice_need_restart">重新启用 Daedalus 以应用设置。</string>
     <string name="notice_start_download">正在下载规则，请稍等 ……</string>
     <string name="notice_downloaded">已下载规则。</string>
+    <string name="notice_download_failed">规则下载失败。</string>
     <string name="notice_now_downloading">Daedalus 当前正在下载规则，请稍等。</string>
     <string name="notice_fill_in_all">请填写所有配置项。</string>
     <string name="notice_delete_confirm_prompt">您确定要删除此配置项？</string>
@@ -51,6 +52,7 @@
     <string name="settings_notification">显示通知</string>
     <string name="settings_check_update">检查更新</string>
     <string name="settings_update_summary">前往 GitHub 发布页面。</string>
+    <string name="settings_privacy_policy">隐私政策</string>
     <string name="settings_count_number_of_queries">统计 DNS 查询次数</string>
     <string name="settings_bug_report">提交反馈</string>
     <string name="settings_issue_summary">前往 GitHub 提交 Bug 反馈。</string>
@@ -58,14 +60,14 @@
     <string name="settings_help_and_support">支持和帮助</string>
     <string name="settings_advanced">高级系统设置</string>
     <string name="settings_advanced_on">开启</string>
-    <string name="settings_local_rules_resolution">本地规则解析</string>
-    <string name="settings_dns_over_tcp">DNS over TCP</string>
+    <string name="settings_local_rules_resolver">本地规则解析</string>
     <string name="settings_manual">使用手册</string>
     <string name="settings_manual_summary">访问 GitHub wiki 页面。</string>
     <string name="settings_log_size">日志大小限制</string>
     <string name="settings_debug_output">调试输出</string>
     <string name="settings_allow_dynamic_rule_reload">允许动态更新规则</string>
     <string name="settings_dark_theme">使用暗主题</string>
+    <string name="settings_dns_query_method">DNS 查询方式</string>
 
     <string name="settings_rule_name">规则名称</string>
     <string name="settings_rule_type">规则类型</string>
@@ -81,11 +83,17 @@
     <string name="settings_server_address">服务器地址</string>
     <string name="settings_server_port">服务器端口</string>
 
-    <string name="server_aixyz_south_china">AIXYZ DNS 华南</string>
-    <string name="server_aixyz_east_china">AIXYZ DNS 华东</string>
-    <string name="server_fundns_south_china">FUN DNS 华南</string>
+    <string name="settings_app_filter">分应用代理</string>
+    <string name="settings_app_filter_list">选择应用</string>
+    <string name="settings_app_filter_mode">黑名单模式</string>
+    <string name="settings_app_filter_list_summary">选择要过滤的应用</string>
+    <string name="settings_app_filter_summary">仅支持Android Lollipop及以上版本</string>
+
     <string name="server_pdomo_primary">PdoMo DNS 主服务器</string>
     <string name="server_pdomo_secondary">PdoMo DNS 辅服务器</string>
+    <string name="server_puredns_south_china">PureDNS 华南</string>
+    <string name="server_puredns_north_china">PureDNS 华北</string>
+    <string name="server_rubyfish">红鱼 (DoH)</string>
 
     <string name="primary_server">首选 DNS 服务器</string>
     <string name="secondary_server">备用 DNS 服务器</string>
@@ -98,6 +106,4 @@
     <string name="test_test_domain">google.com</string>
 
     <string name="nav_version">版本:</string>
-    <string name="nav_git_commit">Git commit:</string>
-    <string name="nav_github">GitHub</string>
 </resources>

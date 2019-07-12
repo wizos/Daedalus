@@ -3,12 +3,12 @@ package org.itxtech.daedalus.provider;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
-import android.support.annotation.NonNull;
 import android.system.ErrnoException;
 import android.system.Os;
 import android.system.OsConstants;
 import android.system.StructPollfd;
 import android.util.Log;
+import androidx.annotation.NonNull;
 import org.itxtech.daedalus.service.DaedalusVpnService;
 import org.itxtech.daedalus.util.Logger;
 import org.itxtech.daedalus.util.server.DNSServerHelper;
@@ -38,7 +38,7 @@ public class TcpProvider extends UdpProvider {
 
     private static final String TAG = "TcpProvider";
 
-    private final TcpProvider.WospList dnsIn = new TcpProvider.WospList();
+    protected final TcpProvider.WospList dnsIn = new TcpProvider.WospList();
 
     public TcpProvider(ParcelFileDescriptor descriptor, DaedalusVpnService service) {
         super(descriptor, service);
@@ -47,7 +47,6 @@ public class TcpProvider extends UdpProvider {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void process() {
         try {
-            Log.d(TAG, "Starting advanced DNS proxy.");
             FileDescriptor[] pipes = Os.pipe();
             mInterruptFd = pipes[0];
             mBlockFd = pipes[1];
@@ -119,14 +118,15 @@ public class TcpProvider extends UdpProvider {
         }
     }
 
-    private byte[] processUdpPacket(DatagramPacket outPacket, IpPacket parsedPacket) {
+    protected byte[] processUdpPacket(DatagramPacket outPacket, IpPacket parsedPacket) {
         if (parsedPacket == null) {
             return new byte[0];
         }
         return outPacket.getData();
     }
 
-    void forwardPacket(DatagramPacket outPacket, IpPacket parsedPacket) throws DaedalusVpnService.VpnNetworkException {
+    @Override
+    protected void forwardPacket(DatagramPacket outPacket, IpPacket parsedPacket) throws DaedalusVpnService.VpnNetworkException {
         Socket dnsSocket;
         try {
             // Packets to be sent to the real DNS server will need to be protected from the VPN
@@ -177,7 +177,7 @@ public class TcpProvider extends UdpProvider {
     /**
      * Helper class holding a socket, the packet we are waiting the answer for, and a time
      */
-    private static class WaitingOnSocketPacket {
+    public static class WaitingOnSocketPacket {
         final Socket socket;
         final IpPacket packet;
         private final long time;
@@ -196,7 +196,7 @@ public class TcpProvider extends UdpProvider {
     /**
      * Queue of WaitingOnSocketPacket, bound on time and space.
      */
-    private static class WospList implements Iterable<TcpProvider.WaitingOnSocketPacket> {
+    public static class WospList implements Iterable<TcpProvider.WaitingOnSocketPacket> {
         private final LinkedList<TcpProvider.WaitingOnSocketPacket> list = new LinkedList<>();
 
         void add(TcpProvider.WaitingOnSocketPacket wosp) {

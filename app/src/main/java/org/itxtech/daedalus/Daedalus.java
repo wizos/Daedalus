@@ -46,15 +46,17 @@ public class Daedalus extends Application {
     private static final String SHORTCUT_ID_ACTIVATE = "shortcut_activate";
 
     public static final List<DNSServer> DNS_SERVERS = new ArrayList<DNSServer>() {{
-        add(new DNSServer("119.23.248.241", R.string.server_fundns_south_china));
         add(new DNSServer("101.132.183.99", R.string.server_pdomo_primary));
         add(new DNSServer("193.112.15.186", R.string.server_pdomo_secondary));
-        add(new DNSServer("115.159.146.99", R.string.server_aixyz_east_china));
-        add(new DNSServer("123.206.21.48", R.string.server_aixyz_south_china));
+        //add(new DNSServer("123.207.13.111", R.string.server_puredns_south_china));
+        //add(new DNSServer("123.207.137.88", R.string.server_puredns_north_china));
+        add(new DNSServer("dns.rubyfish.cn/dns-query", R.string.server_rubyfish));
     }};
 
     public static final List<Rule> RULES = new ArrayList<Rule>() {{
         //Build-in Hosts rule providers
+        add(new Rule("iTXTech/Daedalus/Default", "daedalus-default.hosts", Rule.TYPE_HOSTS,
+                "https://raw.githubusercontent.com/iTXTech/Daedalus/master/default.hosts", false));
         add(new Rule("googlehosts/hosts", "googlehosts.hosts", Rule.TYPE_HOSTS,
                 "https://raw.githubusercontent.com/googlehosts/hosts/master/hosts-files/hosts", false));
         add(new Rule("vokins/yhosts", "vokins.hosts", Rule.TYPE_HOSTS,
@@ -101,10 +103,10 @@ public class Daedalus extends Application {
     private void initDirectory(String dir) {
         File directory = new File(dir);
         if (!directory.isDirectory()) {
-            Logger.warning(dir + " is not a directory. Delete result: " + String.valueOf(directory.delete()));
+            Logger.warning(dir + " is not a directory. Delete result: " + directory.delete());
         }
         if (!directory.exists()) {
-            Logger.debug(dir + " does not exist. Create result: " + String.valueOf(directory.mkdirs()));
+            Logger.debug(dir + " does not exist. Create result: " + directory.mkdirs());
         }
     }
 

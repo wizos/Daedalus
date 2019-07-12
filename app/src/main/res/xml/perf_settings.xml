@@ -49,6 +49,26 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:key="settings_app_filter"
+        android:title="@string/settings_app_filter">
+        <SwitchPreference
+            android:key="settings_app_filter_switch"
+            android:title="@string/settings_app_filter"
+            android:summary="@string/settings_app_filter_summary"
+            android:defaultValue="false"/>
+        <SwitchPreference
+            android:key="settings_app_filter_mode_switch"
+            android:title="@string/settings_app_filter_mode"
+            android:defaultValue="false"
+            android:enabled="false"/>
+        <org.itxtech.daedalus.widget.ClickPreference
+            android:key="settings_app_filter_list"
+            android:title="@string/settings_app_filter_list"
+            android:summary="@string/settings_app_filter_list_summary"
+            android:enabled="false"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
             android:key="settings_advanced"
             android:title="@string/settings_advanced">
         <SwitchPreference
@@ -62,7 +82,7 @@
                 android:enabled="false"/>
         <SwitchPreference
                 android:key="settings_local_rules_resolution"
-                android:title="@string/settings_local_rules_resolution"
+                android:title="@string/settings_local_rules_resolver"
                 android:defaultValue="false"
                 android:enabled="false"/>
         <SwitchPreference
@@ -70,10 +90,13 @@
                 android:title="@string/settings_allow_dynamic_rule_reload"
                 android:defaultValue="false"
                 android:enabled="false"/>
-        <SwitchPreference
-                android:key="settings_dns_over_tcp"
-                android:title="@string/settings_dns_over_tcp"
-                android:defaultValue="false"
+        <ListPreference
+                android:key="settings_dns_query_method"
+                android:title="@string/settings_dns_query_method"
+                android:dialogTitle="@string/settings_dns_query_method"
+                android:entries="@array/dns_query_methods"
+                android:entryValues="@array/dns_query_method_values"
+                android:defaultValue="0"
                 android:enabled="false"/>
         <SwitchPreference
                 android:key="settings_debug_output"
@@ -85,6 +108,9 @@
     <PreferenceCategory
             android:key="settings_help"
             android:title="@string/settings_help_and_support">
+        <org.itxtech.daedalus.widget.ClickPreference
+                android:key="settings_privacy_policy"
+                android:title="@string/settings_privacy_policy"/>
         <org.itxtech.daedalus.widget.ClickPreference
                 android:key="settings_check_update"
                 android:title="@string/settings_check_update"

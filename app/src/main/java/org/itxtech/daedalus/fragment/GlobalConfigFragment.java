@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.*;
-import android.support.design.widget.Snackbar;
 import android.view.View;
+
+import com.google.android.material.snackbar.Snackbar;
+
 import org.itxtech.daedalus.Daedalus;
 import org.itxtech.daedalus.R;
+import org.itxtech.daedalus.activity.FilterAppProxyActivity;
 import org.itxtech.daedalus.activity.MainActivity;
 import org.itxtech.daedalus.util.server.DNSServerHelper;
 
@@ -82,12 +85,26 @@ public class GlobalConfigFragment extends PreferenceFragment {
             SwitchPreference boot = (SwitchPreference) findPreference("settings_boot");
             boot.setEnabled(false);
             boot.setChecked(false);
+            SwitchPreference app_filter = (SwitchPreference) findPreference("settings_app_filter_switch");
+            app_filter.setEnabled(false);
+            app_filter.setChecked(false);
         }
 
         SwitchPreference advanced = (SwitchPreference) findPreference("settings_advanced_switch");
         advanced.setOnPreferenceChangeListener((preference, newValue) -> {
-            updateAdvancedOptions((boolean) newValue);
+            updateOptions((boolean) newValue, "settings_advanced");
             return true;
+        });
+
+        SwitchPreference app_filter = (SwitchPreference) findPreference("settings_app_filter_switch");
+        app_filter.setOnPreferenceChangeListener((p, w) -> {
+            updateOptions((boolean) w, "settings_app_filter");
+            return true;
+        });
+
+        findPreference("settings_app_filter_list").setOnPreferenceClickListener(preference -> {
+            startActivity(new Intent(getActivity(), FilterAppProxyActivity.class));
+            return false;
         });
 
         findPreference("settings_check_update").setOnPreferenceClickListener(preference -> {
@@ -105,11 +122,17 @@ public class GlobalConfigFragment extends PreferenceFragment {
             return false;
         });
 
-        updateAdvancedOptions(advanced.isChecked());
+        findPreference("settings_privacy_policy").setOnPreferenceClickListener(preference -> {
+            Daedalus.openUri("https://github.com/iTXTech/Daedalus/wiki/Privacy-Policy");
+            return false;
+        });
+
+        updateOptions(advanced.isChecked(), "settings_advanced");
+        updateOptions(app_filter.isChecked(), "settings_app_filter");
     }
 
-    private void updateAdvancedOptions(boolean checked) {
-        PreferenceCategory category = (PreferenceCategory) findPreference("settings_advanced");
+    private void updateOptions(boolean checked, String pref) {
+        PreferenceCategory category = (PreferenceCategory) findPreference(pref);
         for (int i = 1; i < category.getPreferenceCount(); i++) {
             Preference preference = category.getPreference(i);
             if (checked) {
