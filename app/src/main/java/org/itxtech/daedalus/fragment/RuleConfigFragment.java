@@ -1,16 +1,14 @@
 package org.itxtech.daedalus.fragment;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.preference.EditTextPreference;
-import android.preference.ListPreference;
+import androidx.preference.EditTextPreference;
+import androidx.preference.ListPreference;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,9 +40,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class RuleConfigFragment extends ConfigFragment {
     private static final OkHttpClient HTTP_CLIENT = new OkHttpClient.Builder()
-            .connectTimeout(5, TimeUnit.SECONDS)
-            .readTimeout(10, TimeUnit.SECONDS)
-            .writeTimeout(10, TimeUnit.SECONDS)
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
             .build();
 
     private static final int READ_REQUEST_CODE = 1;
@@ -74,10 +72,8 @@ public class RuleConfigFragment extends ConfigFragment {
         }
     }
 
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.perf_rule);
     }
 
@@ -87,13 +83,13 @@ public class RuleConfigFragment extends ConfigFragment {
 
         mHandler = new RuleConfigHandler().setView(view);
 
-        final EditTextPreference ruleName = (EditTextPreference) findPreference("ruleName");
+        final EditTextPreference ruleName = findPreference("ruleName");
         ruleName.setOnPreferenceChangeListener((preference, newValue) -> {
             preference.setSummary((String) newValue);
             return true;
         });
 
-        final ListPreference ruleType = (ListPreference) findPreference("ruleType");
+        final ListPreference ruleType = findPreference("ruleType");
         final String[] entries = {"Hosts", "DNSMasq"};
         String[] values = {"0", "1"};
         ruleType.setEntries(entries);
@@ -103,19 +99,19 @@ public class RuleConfigFragment extends ConfigFragment {
             return true;
         });
 
-        final EditTextPreference ruleDownloadUrl = (EditTextPreference) findPreference("ruleDownloadUrl");
+        final EditTextPreference ruleDownloadUrl = findPreference("ruleDownloadUrl");
         ruleDownloadUrl.setOnPreferenceChangeListener((preference, newValue) -> {
             preference.setSummary((String) newValue);
             return true;
         });
 
-        final EditTextPreference ruleFilename = (EditTextPreference) findPreference("ruleFilename");
+        final EditTextPreference ruleFilename = findPreference("ruleFilename");
         ruleFilename.setOnPreferenceChangeListener((preference, newValue) -> {
             preference.setSummary((String) newValue);
             return true;
         });
 
-        ClickPreference ruleSync = (ClickPreference) findPreference("ruleSync");
+        ClickPreference ruleSync = findPreference("ruleSync");
         ruleSync.setOnPreferenceClickListener(preference -> {
             save();
             if (mThread == null) {
@@ -169,7 +165,7 @@ public class RuleConfigFragment extends ConfigFragment {
             return false;
         });
 
-        ListPreference ruleImportBuildIn = (ListPreference) findPreference("ruleImportBuildIn");
+        ListPreference ruleImportBuildIn = findPreference("ruleImportBuildIn");
         ruleImportBuildIn.setEntries(Rule.getBuildInRuleNames());
         ruleImportBuildIn.setEntryValues(Rule.getBuildInRuleEntries());
         ruleImportBuildIn.setOnPreferenceChangeListener((preference, newValue) -> {
@@ -185,13 +181,9 @@ public class RuleConfigFragment extends ConfigFragment {
             return true;
         });
 
-        ClickPreference ruleImportExternal = (ClickPreference) findPreference("ruleImportExternal");
+        ClickPreference ruleImportExternal = findPreference("ruleImportExternal");
         ruleImportExternal.setOnPreferenceClickListener(preference -> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                performFileSearch();
-            } else {
-                Snackbar.make(getView(), R.string.notice_legacy_api, Snackbar.LENGTH_LONG).show();
-            }
+            performFileSearch();
             return false;
         });
 
@@ -228,7 +220,6 @@ public class RuleConfigFragment extends ConfigFragment {
         return view;
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     private void performFileSearch() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
 
@@ -241,7 +232,6 @@ public class RuleConfigFragment extends ConfigFragment {
     }
 
     @Override
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             if (resultData != null) {

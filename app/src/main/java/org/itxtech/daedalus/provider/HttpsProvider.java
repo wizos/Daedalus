@@ -1,16 +1,16 @@
 package org.itxtech.daedalus.provider;
 
-import android.annotation.TargetApi;
-import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.system.Os;
 import android.system.OsConstants;
 import android.system.StructPollfd;
 import android.util.Log;
 import androidx.annotation.NonNull;
+import okhttp3.OkHttpClient;
 import org.itxtech.daedalus.Daedalus;
 import org.itxtech.daedalus.service.DaedalusVpnService;
 import org.itxtech.daedalus.util.Logger;
+import org.itxtech.daedalus.server.DnsServerHelper;
 import org.minidns.dnsmessage.DnsMessage;
 import org.pcap4j.packet.IpPacket;
 import org.pcap4j.packet.IpSelector;
@@ -21,8 +21,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Daedalus Project
@@ -36,17 +38,34 @@ import java.util.LinkedList;
  * (at your option) any later version.
  */
 abstract public class HttpsProvider extends Provider {
-    protected static final String HTTPS_SUFFIX = "https://";
+
+    public static final String HTTPS_SUFFIX = "https://";
 
     private static final String TAG = "HttpsProvider";
 
-    protected final WhqList whqList = new WhqList();
+    final WhqList whqList = new WhqList();
 
-    public HttpsProvider(ParcelFileDescriptor descriptor, DaedalusVpnService service) {
+    HttpsProvider(ParcelFileDescriptor descriptor, DaedalusVpnService service) {
         super(descriptor, service);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    OkHttpClient getHttpClient(String accept) {
+        return new OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
+                .addInterceptor((chain) -> chain.proceed(chain.request().newBuilder()
+                        .header("Accept", accept)
+                        .build()))
+                .dns(hostname -> {
+                    if (DnsServerHelper.domainCache.containsKey(hostname)) {
+                        return DnsServerHelper.domainCache.get(hostname);
+                    }
+                    return Arrays.asList(InetAddress.getAllByName(hostname));
+                })
+                .build();
+    }
+
     public void process() {
         try {
             FileDescriptor[] pipes = Os.pipe();
@@ -119,7 +138,7 @@ abstract public class HttpsProvider extends Provider {
             return;
         String uri;
         try {
-            uri = service.dnsServers.get(destAddr.getHostAddress());//https uri
+            uri = service.dnsServers.get(destAddr.getHostAddress()).getAddress();//https uri
         } catch (Exception e) {
             Logger.logException(e);
             return;
@@ -142,7 +161,7 @@ abstract public class HttpsProvider extends Provider {
             return;
         }
         if (dnsMsg.getQuestion() == null) {
-            Log.i(TAG, "handleDnsRequest: Discarding DNS packet with no query " + dnsMsg);
+            Logger.debug("handleDnsRequest: Discarding DNS packet with no query " + dnsMsg);
             return;
         }
 

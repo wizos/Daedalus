@@ -12,16 +12,6 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import org.itxtech.daedalus.Daedalus;
-import org.itxtech.daedalus.R;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +20,13 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import org.itxtech.daedalus.Daedalus;
+import org.itxtech.daedalus.R;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Daedalus Project
@@ -42,8 +39,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  */
-public class FilterAppProxyActivity extends AppCompatActivity {
-
+public class AppFilterActivity extends AppCompatActivity {
     private RecyclerViewAdapter adapter;
 
     @Override
@@ -53,7 +49,7 @@ public class FilterAppProxyActivity extends AppCompatActivity {
         }
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_filter_app);
+        setContentView(R.layout.activity_app_filter);
         Toolbar toolbar = findViewById(R.id.toolbar_filter);
         Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_clear);
         RecyclerView recyclerView = findViewById(R.id.recyclerView_app_filter_list);
@@ -63,15 +59,10 @@ public class FilterAppProxyActivity extends AppCompatActivity {
         DrawableCompat.setTint(wrappedDrawable, Color.WHITE);
         toolbar.setNavigationIcon(drawable);
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
-        adapter = new RecyclerViewAdapter(getAppList());
-        recyclerView.setAdapter(adapter);
-    }
-
-    @Override
-    public void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        Toolbar toolbar = findViewById(R.id.toolbar_filter);
         toolbar.setTitle(R.string.settings_app_filter);
+        adapter = new RecyclerViewAdapter();
+        recyclerView.setAdapter(adapter);
+        new Thread(() -> adapter.updateList(getAppList())).start();
     }
 
     @Override
@@ -86,15 +77,15 @@ public class FilterAppProxyActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-    private class AppObject {
-        private String app_name;
-        private String app_package_name;
-        private Drawable app_icon;
+    private static class AppObject {
+        private String appName;
+        private String appPackageName;
+        private Drawable appIcon;
 
         AppObject(String appName, String packageName, Drawable appIcon) {
-            this.app_name = appName;
-            this.app_package_name = packageName;
-            this.app_icon = appIcon;
+            this.appName = appName;
+            this.appPackageName = packageName;
+            this.appIcon = appIcon;
         }
     }
 
@@ -113,20 +104,19 @@ public class FilterAppProxyActivity extends AppCompatActivity {
     }
 
     private class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
-        private ArrayList<AppObject> appList;
+        private ArrayList<AppObject> appList = new ArrayList<>();
         @SuppressLint("UseSparseArrays")
-        private Map<Integer, Boolean> check_status = new HashMap<>();
+        private HashMap<Integer, Boolean> checkStatus = new HashMap<>();
 
-        RecyclerViewAdapter(ArrayList<AppObject> appObjects) {
+        void updateList(ArrayList<AppObject> appObjects) {
             appList = appObjects;
-
             for (int i = 0; i < appObjects.size(); i++) {
-                if (Daedalus.configurations.getFilterAppObjects().contains(appObjects.get(i).app_package_name)) {
-                    check_status.put(i, true);
+                if (Daedalus.configurations.getAppObjects().contains(appObjects.get(i).appPackageName)) {
+                    checkStatus.put(i, true);
                 }
             }
+            runOnUiThread(this::notifyDataSetChanged);
         }
-
 
         @NonNull
         @Override
@@ -137,26 +127,25 @@ public class FilterAppProxyActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
-            String package_name = appList.get(position).app_package_name;
-            holder.app_name.setText(appList.get(position).app_name);
-            holder.app_icon.setImageDrawable(appList.get(position).app_icon);
-            holder.app_package_name = package_name;
-            holder.app_check.setOnCheckedChangeListener(null);
-            if (Daedalus.configurations.getFilterAppObjects().contains(package_name)) {
-                holder.app_check.setChecked(true);
-                //check_status.put(position, true);
+            String packageName = appList.get(position).appPackageName;
+            holder.appName.setText(appList.get(position).appName);
+            holder.appIcon.setImageDrawable(appList.get(position).appIcon);
+            holder.appPackageName = packageName;
+            holder.appCheck.setOnCheckedChangeListener(null);
+            if (Daedalus.configurations.getAppObjects().contains(packageName)) {
+                holder.appCheck.setChecked(true);
             }
-            holder.app_check.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            holder.appCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
-                    check_status.put(position, true);
+                    checkStatus.put(position, true);
                 } else {
-                    check_status.remove(position);
+                    checkStatus.remove(position);
                 }
             });
-            if (check_status != null && check_status.containsKey(position)) {
-                holder.app_check.setChecked(true);
+            if (checkStatus != null && checkStatus.containsKey(position)) {
+                holder.appCheck.setChecked(true);
             } else {
-                holder.app_check.setChecked(false);
+                holder.appCheck.setChecked(false);
             }
         }
 
@@ -166,29 +155,28 @@ public class FilterAppProxyActivity extends AppCompatActivity {
         }
     }
 
-    private class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private ImageView app_icon;
-        private TextView app_name;
-        private CheckBox app_check;
-        private String app_package_name;
+    private static class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private ImageView appIcon;
+        private TextView appName;
+        private CheckBox appCheck;
+        private String appPackageName;
 
         RecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
-            app_icon = itemView.findViewById(R.id.app_icon);
-            app_name = itemView.findViewById(R.id.app_name);
-            app_check = itemView.findViewById(R.id.app_check);
+            appIcon = itemView.findViewById(R.id.app_icon);
+            appName = itemView.findViewById(R.id.app_name);
+            appCheck = itemView.findViewById(R.id.app_check);
             itemView.setOnClickListener(this);
         }
 
-
         @Override
         public void onClick(View v) {
-            if (app_check.isChecked()) {
-                app_check.setChecked(false);
-                Daedalus.configurations.getFilterAppObjects().remove(app_package_name);
+            if (appCheck.isChecked()) {
+                appCheck.setChecked(false);
+                Daedalus.configurations.getAppObjects().remove(appPackageName);
             } else {
-                app_check.setChecked(true);
-                Daedalus.configurations.getFilterAppObjects().add(app_package_name);
+                appCheck.setChecked(true);
+                Daedalus.configurations.getAppObjects().add(appPackageName);
             }
         }
     }

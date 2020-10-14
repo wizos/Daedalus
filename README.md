@@ -1,6 +1,6 @@
 # iTXTech Daedalus
 
-[![Donate](https://img.shields.io/badge/alipay-donate-yellow.svg)](https://qr.alipay.com/a6x07022gffiehykicipv1a)
+[![Donate](https://img.shields.io/badge/alipay-donate-yellow.svg)](https://qr.alipay.com/FKX04751EZDP0SQ0BOT137)
 [![Build Status](https://travis-ci.org/iTXTech/Daedalus.svg?branch=master)](https://travis-ci.org/iTXTech/Daedalus)
 [![Jenkins](https://img.shields.io/jenkins/s/http/dev.itxtech.org:10298/job/Daedalus.svg)](http://dev.itxtech.org:10298/job/Daedalus/)
 
@@ -16,13 +16,12 @@ __No root required Android DNS modifier and Hosts/DNSMasq resolver.__
       height="80">](https://play.google.com/store/apps/details?id=org.itxtech.daedalus)
 
 ## Useful links
-* __[Telegram](https://t.me/iTXTechDaedalus)__
-* __[Wiki](https://github.com/iTXTech/Daedalus/wiki)__ - __See before using DoH__
+* __[Telegram](https://t.me/iTXTechDaedalus)__ - Join chat
+* __[Wiki](https://github.com/iTXTech/Daedalus/wiki)__ - Pending update
 
 ## Introduction
 
-This application can create a VPN tunnel to modify the DNS settings on Android.<br>
-Through the DNS server and rules which are provided by third parties, users can visit Google, Twitter and so on via https protocol directly without a VPN.<br>
+This application creates a VPN tunnel to handle all DNS requests.<br>
 <br>
 Features:
 * No root access required, no ads contained
@@ -48,35 +47,32 @@ __Users must comply with local laws and regulations.__<br>
 
 * __CuteDNS__ - *Shutdown according to regulations*
 * __[FUN DNS](http://fundns.cn)__ - *Shutdown according to regulations*
-* __[Pure DNS](https://puredns.cn/)__
-* __[PdoMo-DNS](https://pdomo.me/)__ - *Intelligent Free Public DNS*
+* __[Pure DNS](https://puredns.cn/)__ - *Shutdown according to regulations*
+* __[PdoMo-DNS](https://pdomo.me/)__ - *Shutdown according to regulations*
 * __[rubyfish](https://www.rubyfish.cn)__ - *Free DoT/DoH DNS*
 
 ## Rule Providers
 
-* __[Daedalus Default](https://github.com/iTXTech/Daedalus/blob/master/default.hosts)__ - __Default Rules for Built-in DoH servers__
 * __[hosts](https://github.com/googlehosts/hosts)__ by *[googlehosts](https://github.com/googlehosts)* - [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)
 * __[yhosts](https://github.com/vokins/yhosts)__ by *[vokins](https://github.com/vokins)* - [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/)
 
 ## Requirements
 
-* Minimum Android version: 4.0.3 (API 15) - __*Basic VPN functions*__
-* Recommended Android version: >= 5.0 (API 21) - __*Full features*__
-* Best Android version: >= 7.1 (API 25) - __*Launcher shortcuts*__
+* Minimum Android version: >= 5.0 (API 21)
+* Recommended Android version: >= 7.1 (API 25) - __*Launcher shortcuts*__
 
 ## Open Source Licenses
 
 * __[ClearEditText](https://github.com/MrFuFuFu/ClearEditText)__ by *[Yuan Fu](https://github.com/MrFuFuFu)* - [APL 2.0](https://github.com/MrFuFuFu/ClearEditText)
 * __[DNS66](https://github.com/julian-klode/dns66)__ by *[Julian Andres Klode](https://github.com/julian-klode)* - [GPLv3](https://github.com/julian-klode/dns66/blob/master/COPYING)
 * __[Pcap4J](https://github.com/kaitoy/pcap4j)__ by *[Kaito Yamada](https://github.com/kaitoy)* - [MIT](https://github.com/kaitoy/pcap4j)
-* __[MiniDNS](https://github.com/rtreffer/minidns)__ by *[Rene Treffer](https://github.com/rtreffer)* - [LGPLv2.1](https://github.com/rtreffer/minidns/blob/master/LICENCE_LGPL2.1)
+* __[MiniDNS](https://github.com/MiniDNS/minidns)__ by *[MiniDNS](https://github.com/MiniDNS)* - [APL 2.0](https://github.com/MiniDNS/minidns/blob/master/LICENCE_APACHE)
 * __[Gson](https://github.com/google/gson)__ by *[Google](https://github.com/google)* - [APL 2.0](https://github.com/google/gson/blob/master/LICENSE)
 * __[Shadowsocks](https://github.com/shadowsocks/shadowsocks-android)__ by *[Shadowsocks](https://github.com/shadowsocks)* - [GPLv3](https://github.com/shadowsocks/shadowsocks-android/blob/master/LICENSE)
 
 ## Credits
 
 * __[JetBrains](https://www.jetbrains.com/)__ - For providing free license for [IntelliJ IDEA](https://www.jetbrains.com/idea/)
-* __[ShenniaoTech](https://www.sncidc.com/)__ - For supporting us with love
 
 ## License
 

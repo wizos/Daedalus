@@ -15,7 +15,7 @@ import org.itxtech.daedalus.service.DaedalusVpnService;
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  */
-public class ProviderPicker {
+public abstract class ProviderPicker {
     public static final int DNS_QUERY_METHOD_UDP = 0;
     public static final int DNS_QUERY_METHOD_TCP = 1;
     public static final int DNS_QUERY_METHOD_TLS = 2;
@@ -24,7 +24,7 @@ public class ProviderPicker {
     //This section mush be the same as the one in arrays.xml
 
     public static Provider getProvider(ParcelFileDescriptor descriptor, DaedalusVpnService service) {
-        switch (Integer.valueOf(Daedalus.getPrefs().getString("settings_dns_query_method", "0"))) {
+        switch (getDnsQueryMethod()) {
             case DNS_QUERY_METHOD_UDP:
                 return new UdpProvider(descriptor, service);
             case DNS_QUERY_METHOD_TCP:
@@ -37,5 +37,9 @@ public class ProviderPicker {
                 return new TlsProvider(descriptor, service);
         }
         return new UdpProvider(descriptor, service);
+    }
+
+    public static int getDnsQueryMethod() {
+        return Integer.parseInt(Daedalus.getPrefs().getString("settings_dns_query_method", "0"));
     }
 }

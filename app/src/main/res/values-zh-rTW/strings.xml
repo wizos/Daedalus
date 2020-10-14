@@ -3,11 +3,9 @@
     <string name="app_name">Daedalus</string>
     <string name="quick_toggle">开关</string>
 
-    <string name="notice_main">世界很大，我要去看看。</string>
     <string name="notice_activated">已啟動 iTXTech Daedalus。</string>
     <string name="notice_start_test">正在測試指定的 DNS 伺服器……</string>
     <string name="notice_queries">DNS 查詢次數:</string>
-    <string name="notice_legacy_api">目前 Android API 無法支援所有功能。</string>
     <string name="notice_need_restart">重新啟動 Daedalus 以套用設定。</string>
     <string name="notice_start_download">正在下載規則，請稍等……</string>
     <string name="notice_downloaded">已下載規則。</string>
@@ -60,12 +58,11 @@
     <string name="settings_help_and_support">支援與說明</string>
     <string name="settings_advanced">進階系統設定</string>
     <string name="settings_advanced_on">開啟</string>
-    <string name="settings_local_rules_resolver">本機規則解析</string>
     <string name="settings_manual">使用手冊</string>
     <string name="settings_manual_summary">造訪 GitHub wiki 頁面。</string>
     <string name="settings_log_size">紀錄檔大小限制</string>
     <string name="settings_debug_output">调试输出 TODO</string>
-    <string name="settings_allow_dynamic_rule_reload">允許動態規則重新載入</string>
+    <string name="settings_dont_build_cache">不緩存 DNS 的 IP地址</string>
     <string name="settings_dark_theme">使用暗主题</string>
 
     <string name="settings_rule_name">規則名稱</string>
@@ -75,9 +72,10 @@
     <string name="settings_rule_sync">同步規則</string>
     <string name="settings_rule_filename">規則檔案名稱</string>
     <string name="settings_rule_import">匯入</string>
-    <string name="settings_rule_import_build_in">内置</string>
+    <string name="settings_rule_import_built_in">内置</string>
     <string name="settings_rule_import_external">外部</string>
     <string name="settings_dns_query_method">DNS 查询方式</string>
+    <string name="settings_foreground">運行前臺服務</string>
 
     <string name="settings_server_name">伺服器名稱</string>
     <string name="settings_server_address">伺服器網址</string>
@@ -87,12 +85,9 @@
     <string name="settings_app_filter_list">選擇應用</string>
     <string name="settings_app_filter_mode">黑名單模式</string>
     <string name="settings_app_filter_list_summary">選擇要過濾的應用</string>
-    <string name="settings_app_filter_summary">僅支持Android Lollipop及以上版本</string>
 
-    <string name="server_pdomo_primary">PdoMo DNS 主伺服器</string>
-    <string name="server_pdomo_secondary">PdoMo DNS 輔伺服器</string>
-    <string name="server_puredns_south_china">PureDNS 華南</string>
-    <string name="server_puredns_north_china">PureDNS 華北</string>
+    <string name="server_twnic_primary">Quad 101 主伺服器</string>
+    <string name="server_twnic_secondary">Quad 101 輔伺服器</string>
     <string name="server_rubyfish">紅魚 (DoH)</string>
 
     <string name="primary_server">主要 DNS 伺服器</string>
@@ -106,4 +101,6 @@
     <string name="test_test_domain">google.com</string>
 
     <string name="nav_version">版本:</string>
+
+    <string name="error_occurred">啟動時出現了一個錯誤</string>
 </resources>
